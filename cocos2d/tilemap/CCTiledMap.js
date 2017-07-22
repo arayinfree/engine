@@ -23,6 +23,11 @@
  THE SOFTWARE.
  ****************************************************************************/
 
+require('./CCTiledMapAsset');
+require('./CCTiledLayer');
+require('./CCTiledObjectGroup');
+require('./CCSGTMXTiledMap');
+
 /**
  * !#en The orientation of tiled map.
  * !#zh Tiled Map 地图方向。

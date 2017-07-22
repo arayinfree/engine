@@ -85,8 +85,17 @@ Audio.State = {
 (function (proto) {
 
     proto.preload = function () {
-        var src = this._src,
-            audio = this;
+        var src = this._src, audio = this;
+
+        if (!src) {
+            this._src = '';
+            this._audioType = Audio.Type.UNKNOWN;
+            this._element = null;
+            this._state = Audio.State.INITIALZING;
+            this._loaded = false;
+            return;
+        }
+
         var item = cc.loader.getItem(src);
 
         if (!item) {
@@ -219,7 +228,18 @@ Audio.State = {
         this._bindEnded(function () {
             this._bindEnded();
         }.bind(this));
-        this._element.currentTime = num;
+        try {
+            this._element.currentTime = num;
+        } catch (err) {
+            var _element = this._element;
+            if (_element.addEventListener) {
+                var func = function () {
+                    _element.removeEventListener('loadedmetadata', func);
+                    _element.currentTime = num;
+                };
+                _element.addEventListener('loadedmetadata', func);
+            }
+        }
     };
     proto.getCurrentTime = function () {
         return this._element ? this._element.currentTime : 0;

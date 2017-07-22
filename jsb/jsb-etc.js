@@ -75,9 +75,15 @@ cc.js.mixin(cc.path, {
 
 // cc.Scheduler
 cc.Scheduler.prototype.schedule = function (callback, target, interval, repeat, delay, paused) {
-    repeat = isFinite(repeat) ? repeat : cc.macro.REPEAT_FOREVER;
-    delay =  delay || 0;
-    paused = !!paused;
+    if (delay === undefined || paused === undefined) {
+        paused = !!repeat;
+        repeat = cc.macro.REPEAT_FOREVER;
+    }
+    else {
+        paused = !!paused;
+        repeat = isFinite(repeat) ? repeat : cc.macro.REPEAT_FOREVER;
+    }
+    delay = delay || 0;
     this.scheduleCallbackForTarget(target, callback, interval, repeat, delay, paused);
 };
 cc.Scheduler.prototype.scheduleUpdate = cc.Scheduler.prototype.scheduleUpdateForTarget;
@@ -199,15 +205,13 @@ window._ccsg = {
     TMXObjectImage: cc.TMXObjetImage,
     TMXObjectShape: cc.TMXObjectShape,
     TMXLayer: cc.TMXLayer,
-    MotionStreak: cc.MotionStreak
+    MotionStreak: cc.MotionStreak,
+    CameraNode: cc.CameraNode
 };
 
 // __errorHandler
 window.__errorHandler = function (filename, lineno, message) {
 };
-
-// rename cc.Class to cc._Class
-cc._Class = cc.Class;
 
 // fix cc.formatStr (#2630)
 cc.formatStr = cc.js.formatStr;
