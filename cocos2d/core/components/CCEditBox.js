@@ -565,6 +565,18 @@ var EditBox = cc.Class({
     },
 
     /**
+     * !#en Let the EditBox blur focus, only valid when stayOnTop is true.
+     * !#zh 让当前 EditBox 失去焦点，只有在 native 平台 的时候设置有效
+     * Note: only available on Web at the moment.
+     * @method setFocus
+     */
+    blurFocus: function(){
+        if(this._sgNode && CC_JSB) {
+            this._sgNode.blurFocus();
+        }
+    },
+
+    /**
      * !#en Determine whether EditBox is getting focus or not.
      * !#zh 判断 EditBox 是否获得了焦点
      * Note: only available on Web at the moment.

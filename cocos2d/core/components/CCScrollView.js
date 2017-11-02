@@ -964,7 +964,10 @@ var ScrollView = cc.Class({
         if (!this.cancelInnerEvents) {
             return;
         }
-
+        var deltaOffset = 7;
+        if (cc.sys.isNative){
+            deltaOffset =  7*cc.Device.getDPI()/160;
+        }
         var deltaMove = cc.pSub(touch.getLocation(), touch.getStartLocation());
         //FIXME: touch move delta should be calculated by DPI.
         if (cc.pLength(deltaMove) > 7) {
